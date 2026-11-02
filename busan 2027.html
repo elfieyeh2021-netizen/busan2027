@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>釜山五天四夜之旅 🌊 Busan Trip 2027</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #1A5F7A;
+            --secondary-blue: #0081C9;
+            --light-blue: #5BC0BE;
+            --sky-blue: #E8F1F5;
+            --accent-yellow: #FFC93C;
+            --bg-color: #F4F7F9;
+            --card-bg: #FFFFFF;
+            --text-dark: #2C3E50;
+            --text-muted: #7F8C8D;
+            --border-radius: 12px;
+            --shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding-bottom: 50px;
+        }
+
+        /* 頂部固定區塊 */
+        .sticky-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        /* 頂部海浪 Banner */
+        header {
+            background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+            color: white;
+            padding: 40px 20px 30px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        .flight-info {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .flight-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            backdrop-filter: blur(5px);
+        }
+
+        /* 導覽列 */
+        nav {
+            position: relative;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(8px);
+            z-index: 100;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow-x: auto;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--primary-blue);
+            font-weight: 700;
+            font-size: 0.9rem;
+            padding: 6px 12px;
+            border-radius: 15px;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        nav a:hover, nav a.active {
+            background: var(--secondary-blue);
+            color: white;
+        }
+
+        /* 主容器 */
+        .container {
+            max-width: none;
+            margin: 20px auto;
+            padding: 0;
+        }
+
+        /* 依固定頁首實際高度預留錨點定位空間 */
+        .day-card {
+            scroll-margin-top: calc(var(--sticky-header-height, 280px) + 12px);
+
+            width: calc(100% - 30px);
+            max-width: 800px;
+            margin: 0 auto 25px;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border-top: 4px solid var(--secondary-blue);
+        }
+
+        .day-header {
+            background: #fff;
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .day-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .day-badge {
+            background: var(--secondary-blue);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .day-header h2 {
+            font-size: 1.15rem;
+            color: var(--primary-blue);
+        }
+
+        .day-content {
+            padding: 20px;
+        }
+
+        /* 時間軸行程列表 */
+        .timeline {
+            position: relative;
+            padding-left: 20px;
+            border-left: 2px solid var(--sky-blue);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 5px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--secondary-blue);
+            border: 2px solid white;
+        }
+
+        .time {
+            font-weight: bold;
+            color: var(--primary-blue);
+            font-size: 0.85rem;
+        }
+
+        .activity {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-top: 2px;
+        }
+
+        .sub-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+
+        /* 標籤 Tag */
+        .tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 6px;
+            font-weight: normal;
+        }
+        .tag-food { background: #FFE8E8; color: #D9534F; }
+        .tag-spot { background: #E3F2FD; color: #1976D2; }
+        .tag-transport { background: #E8F5E9; color: #388E3C; }
+
+        /* 備註與推薦卡片區塊 */
+        .info-box {
+            background: var(--sky-blue);
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-top: 15px;
+            font-size: 0.88rem;
+        }
+
+        .info-box h4 {
+            color: var(--primary-blue);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .info-box ul {
+            list-style-type: none;
+            padding-left: 5px;
+        }
+
+        .info-box li {
+            margin-bottom: 4px;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .info-box li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--secondary-blue);
+        }
+
+        /* 可擴充小幫手筆記區 */
+        .custom-notes {
+            background: #FFFDE7;
+            border: 1px dashed var(--accent-yellow);
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-top: 15px;
+            font-size: 0.88rem;
+        }
+
+        .custom-notes h4 {
+            color: #D4AC0D;
+            margin-bottom: 6px;
+        }
+
+        /* 按鈕樣式 */
+        .btn-link {
+            display: inline-block;
+            background: var(--primary-blue);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.8rem;
+            margin-top: 8px;
+            transition: background 0.2s;
+        }
+
+        .btn-link:hover {
+            background: var(--secondary-blue);
+        }
+
+        /* 頁尾 */
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sticky-header">
+    <header>
+        <h1>🌊 釜山五天四夜自由行</h1>
+        <p>2027/01/16 (六) － 2027/01/20 (三)</p>
+        <div class="flight-info">
+            <span class="flight-badge">🛫 去程：1/16 BR164</span>
+            <span class="flight-badge">🛬 回程：1/20 BR163</span>
+ 	    <a href="https://www.buringme.com/#home" target="_blank" class="btn-link">🗺️ 隨機行程 </a>
+        </div>
+    </header>
+
+    <nav>
+        <a href="#READY">行前準備&必備APP</a>
+        <a href="#day1">D1 西面</a>
+        <a href="#day2">D2 海雲台</a>
+        <a href="#day3">D3 慶州</a>
+        <a href="#day4">D4 廣安里</a>
+        <a href="#day5">D5 採購</a>
+    </nav>
+    </div>
+    <div class="container">
+
+        <!-- READY -->
+        <div class="day-card" id="READY">
+            <div class="day-header" onclick="toggleDay('ready-content')">
+                <div class="day-title">
+                    <span class="day-badge">READY</span>
+                    <h2>行前準備&必備APP</h2>
+                </div>
+                <span>▼</span>
+            </div>
+            <div class="day-content" id="ready-content">
+
+<!-- 最外層置中與寬度控制容器：左右各留白 5%（亦可依喜好改為固定寬度如 width: 90%;） -->
+<div style="width: calc(100% - 30px); max-width: 800px; margin: 0 auto 30px; font-family: sans-serif; line-height: 1.6; color: #333;">
+
+    <!-- 第一區塊：行前必辦清單 -->
+    <div class="custom-notes" style="background-color: #fffbef; border: 1px solid #ffeeba; padding: 18px 20px; border-radius: 6px; margin-bottom: 24px; box-sizing: border-box;">
+        <h4 style="color: #ff9900; margin-top: 0; margin-bottom: 12px; font-size: 16px; font-weight: bold;">💡 行前必辦清單（建議出發前一週完成）</h4>
+        <ul style="margin: 0; padding-left: 20px; list-style-type: disc;">
+            <li style="margin-bottom: 10px;"><strong>申請 K-ETA 或確認免簽：</strong> 目前台灣旅客至韓國免簽，但請在出發前再次確認是否需要填寫 <strong>K-ETA（電子旅行許可）</strong>，或於機上填寫紙本入境卡。</li>
+            <li style="margin-bottom: 10px;"><strong>線上填寫 Q-CODE（健康狀態問卷）：</strong> 出發前 3 天可上網填寫 <a href="https://kdca.go.kr" target="_blank" style="color: #6610f2; text-decoration: underline;">Q-CODE 官方網站</a> 並截圖 QR Code，入境時掃描即可快速通關。</li>
+            <li style="margin-bottom: 10px;"><strong>準備網卡/eSIM：</strong> 韓國地圖和翻譯 APP 非常吃流量，建議購買「無限流量不降速」的網卡或 eSIM，查地圖才不會卡頓。</li>
+            <li style="margin-bottom: 10px;"><strong>準備神卡（WOWPASS 或 NAMANE）：</strong> 可以在台灣先開卡或抵達金海機場後立刻辦一張 <strong>WOWPASS 卡</strong>（結合現金儲值、卡片消費、搭地鐵交通卡 T-money 三合一），在便利商店、咖啡廳或小店直接刷卡非常方便。</li>
+            <li style="margin-bottom: 0;"><strong>兌換少量韓元：</strong> 機場、西面、南浦洞皆有民間換錢所。建議在台灣先換大約 3,000 ~ 5,000 台幣的韓元現金，用來應付路邊布帳馬車（通常只收現金或轉帳）或萬一刷卡失敗時備用。</li>
+        </ul>
+    </div>
+
+    <!-- 第二區塊：韓國旅遊必備APP -->
+    <div class="custom-notes" style="background-color: #fffbef; border: 1px solid #ffeeba; padding: 18px 20px; border-radius: 6px; box-sizing: border-box;">
+        <h4 style="color: #ff9900; margin-top: 0; margin-bottom: 12px; font-size: 16px; font-weight: bold;">💡 韓國旅遊必備 APP</h4>
+        <ul style="margin: 0; padding-left: 20px; list-style-type: disc;">
+            <li style="margin-bottom: 10px;"><strong>地圖導航類：</strong> 【Naver Map】或【Kakao Map】</li>
+            <li style="margin-bottom: 10px;"><strong>交通叫車類：</strong> 【Uber】及【Kakao T】(在名字後標註 TAIWAN)</li>
+            <li style="margin-bottom: 10px;"><strong>翻譯溝通類：</strong> 【Papago】</li>
+            <li style="margin-bottom: 0;"><strong>地鐵搭乘類：</strong> 【韓國地鐵】或【Subway Korea】</li>
+        </ul>
+    </div>
+  
+</div>
+            </div>
+
+</div>
+        <!-- DAY 1 -->
+        <div class="day-card" id="day1">
+            <div class="day-header" onclick="toggleDay('d1-content')">
+                <div class="day-title">
+                    <span class="day-badge">Day 1</span>
+                    <h2>1/16（六）西面 安頓熟悉日</h2>
+                </div>
+                <span>▼</span>
+            </div>
+            <div class="day-content" id="d1-content">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="time">18:15</div>
+                        <div class="activity">✈️ 抵達釜山金海機場</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">20:00</div>
+                        <div class="activity">🏨 住宿處 Check-in</div>
+                        <a href="https://naver.me/5Z1cz4zV" target="_blank" class="btn-link">🗺️ Naver Map 住宿地圖</a>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">20:30</div>
+                        <div class="activity">🥣 晚餐主題：豬肉湯飯 <span class="tag tag-food">美食</span></div>
+                        <div class="sub-desc">晚餐建議：西面豬肉湯飯一條街（松亭三代豬肉湯飯）</div>
+ 			<a href="https://naver.me/GfCsEbvp" target="_blank" class="btn-link">🗺️ Naver Map 地圖</a>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">21:30 -</div>
+                        <div class="activity">🛍️ 西面商圈散步 & 宵夜 <span class="tag tag-spot">景點</span></div>
+                        <div class="sub-desc">宵夜建議：布帳馬車一條街（西面樂天百貨後方）</div>
+			<a href="https://naver.me/xZVbDc9R" target="_blank" class="btn-link">🗺️ Naver Map 地圖</a>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h4>🚕 交通小幫手</h4>
+                    <ul>
+                        <li><strong>計程車：</strong>車程 25-30 分鐘。車資約 ₩18,000 - ₩22,000。</li>
+                        <li><strong>輕軌+地鐵：</strong>金海輕軌 ➔ 沙上站轉乘地鐵 2 號線(綠色) ➔ 西面站。</li>
+ 			<p style="margin-left: 15px;">車程 30-40 分鐘，車資約 ₩2,100</li>
+			<li><strong>機場巴士：</strong>機場巴士2號線可直達西面站（樂天飯店／百貨）。</li>
+			<p style="margin-left: 15px;">車程 45-50 分鐘，車資約 ₩7,500</li>
+                    </ul>
+                </div>
+
+                <!-- 可供後續新增擴充的筆記區 -->
+                <div class="custom-notes">
+                    <h4>💡 筆記</h4>
+                    <ul>
+                        記得在機場先開通 eSIM / 拿 T-money 交通卡 / WOWPASS卡。
+                        <!-- 你可以隨時在這裡新增 <li> 備註事項 -->
+                    </ul>
+                </div>
+            </div>
+</div>
+
+</div>
+        <!-- DAY 2 -->
+        <div class="day-card" id="day2">
+            <div class="day-header" onclick="toggleDay('d2-content')">
+                <div class="day-title">
+                    <span class="day-badge">Day 2</span>
+                    <h2>1/17（日）海雲台一日遊</h2>
+                </div>
+                <span>▼</span>
+            </div>
+            <div class="day-content" id="d2-content">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="time">08:30 - 09:30</div>
+                        <div class="activity">🚃 前往尾浦站 <span class="tag tag-transport">交通</span></div>
+
+ <div class="info-box">
+                    <h4>🚕 交通小幫手</h4>
+                    <ul>
+			<li><strong>方案A : 地鐵+公車</strong> 
+                        <p style="margin-left: 0px;"><strong>第一步：</strong>從西面站（서면역）搭乘釜山地鐵2號線(往洋山／嵗山方向)到海雲台站</li>
+                        <p style="margin-left: 15px;"><strong>第二步：</strong>7號出口出來轉乘 39、100、141 或 200號公車，大約坐4站後在「미포.문탠로드입구（尾浦.月光路入口）」站下車，下車後往前走約270公尺（下坡路段，步行約8～10分鐘）即可抵達藍線公園尾浦站</li>
+ 			<p style="margin-left: 15px;">車程 55-65 分鐘，車資約 ₩1,800/人</li>
+			<li><strong>方案B : 地鐵+走路</strong>
+                        <p style="margin-left: 0px;"><strong>第一步：</strong>從西面站（서면역）搭乘釜山地鐵2號線(往洋山／嵗山方向)到中洞站</li>
+                        <p style="margin-left: 15px;"><strong>第二步：</strong>7號出口出來步行至尾浦站(走15分鐘左右)</li>
+ 			<p style="margin-left: 15px;">車程 50-55 分鐘，車資約 ₩1,800/人</li>
+			<li><strong>方案C : 計程車</strong> 起跳價為 4,800 韓元</li>
+ 			<p style="margin-left: 15px;">車程 30-45 分鐘，車資總計約 ₩5,000/人</li>			
+                    </ul>
+                </div>
+
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">09:30 - 10:30</div>
+                        <div class="activity">🚋 天空膠囊列車（尾浦 ➔ 青沙浦）<span class="tag tag-spot">必去</span>
+			<a href="https://naver.me/FafyrnAe" target="_blank" class="btn-link">🗺️ Naver Map 地圖</a>
+<div class="custom-notes">
+		<h4>💡 筆記</h4>
+                    <ul>
+                        建議去程搭乘「天空膠囊列車」（從尾浦出發靠海側視野最好），回程再搭「海岸列車」慢慢玩回起點。
+			青沙浦天空步道與新開幕的海月展望台也很適合順遊
+                    </ul>
+                    </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">10:30 - 11:00</div>
+                        <div class="activity">📸 青沙浦平交道 <span class="tag tag-food">拍照</span>			</div>
+                        <div class="sub-desc">青沙浦平交道（韓版灌籃高手平交道）/ DIART 土耳其麵包</div>
+			<a href="https://naver.me/xwmeHGJf" target="_blank" class="btn-link">🗺️ 平交道 地圖</a>
+			<a href="https://naver.me/Gxk1OJez" target="_blank" class="btn-link">🗺️ DIART 地圖</a>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">11:30 - 12:30</div>
+                        <div class="activity">🚂 搭海岸列車返回尾浦站</div>
+		<div class="custom-notes">
+		<h4>💡 筆記</h4>
+                    <ul>
+                        若持有 Visit Busan Pass 釜山通行證，可免費兌換「海岸列車自由搭乘券」（限當日、需至尾浦、青沙浦或松亭現場人工櫃檯兌換，18:00後首搭無法使用）。
+                    </ul>
+
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">12:30 - 14:00</div>
+                        <div class="activity">🦪 午餐 <span class="tag tag-food">美食</span></div>
+                        <div class="sub-desc">推薦：海雲台瓦房鱈魚湯/舒暢鱈魚湯 尾浦總店 (搭海岸列車回尾浦 最近)</div>
+			<a href="https://naver.me/GHvq5X0h" target="_blank" class="btn-link">🗺️ 海雲台瓦房鱈魚湯 地圖</a>
+			<a href="https://naver.me/xwmqTMHe" target="_blank" class="btn-link">🗺️ 舒暢鱈魚湯 地圖</a>
+                        <div class="sub-desc">推薦：海雲台 31cm 鮮切刀削麵</div>
+			<a href="https://naver.me/5XJI630U" target="_blank" class="btn-link">🗺️ 刀削麵 地圖</a>
+                        <div class="sub-desc">推薦：大海鮑魚粥 (也可當早餐)</div>
+			<a href="https://naver.me/5mI03xa7" target="_blank" class="btn-link">🗺️ 大海鮑魚粥 地圖</a>
+                    </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">14:00 - 16:30</div>
+                        <div class="activity">✨ 散步逛街 ＋ 咖啡廳外帶</div>
+                        <div class="sub-desc">從尾浦沿著海雲台沙灘慢慢散步向海雲台站方向走（約 20 分鐘）。抵達海雲台站後，穿過地下道到後站的海里團路。這裡有很多韓系選物店、文創小店。</div>
+                        <div class="sub-desc">外帶甜點店推薦 : BoDuLe 鹽可頌/Moru 磅蛋糕/Haeundae Sand 夾心餅</div>
+			<a href="https://naver.me/xrSQSF2f" target="_blank" class="btn-link">🗺️ BoDuLe 地圖</a>
+			<a href="https://naver.me/G4Wb9Cu9" target="_blank" class="btn-link">🗺️ moru pound 地圖</a>
+			<a href="https://naver.me/xmxIx8kL" target="_blank" class="btn-link">🗺️ Busan Bada Sand 地圖</a>
+                        <div class="sub-desc">特色咖啡廳推薦 : RAW and SWEET/Cafe Haeundae 1994</div>
+			<a href="https://naver.me/GbD1yR1N" target="_blank" class="btn-link">🗺️ raw and sweet 地圖</a>
+			<a href="https://maps.app.goo.gl/Asnd4noKH8urV87B7" target="_blank" class="btn-link">🗺️ Cafe Haeundae 1994 地圖</a>
+                        <div class="sub-desc">選物店推薦 : 
+			<li><strong>.NOTE Busan Perfume Workshop :</strong> 海雲台店限定的「Haeundae Salt（海雲台鹽） 」香氣 oil。店內櫃檯可以辦理現場免稅。
+			<li><strong>Luft Mansion :</strong> 主打歐美復古與韓系極簡融合的生活雜貨。刺繡字樣彩色帆布袋、色彩繽紛的法式玻璃杯、香氛蠟燭、手工陶瓷餐盤與設計感地墊。
+			<li><strong>hetras :</strong>高檔調製香水（5,000 ~ 68,000 韓元）、居家擴香瓶、香氛護手霜、保濕香水噴霧、除臭香氛濕紙巾。
+			<li><strong>Keveren House :</strong> 外觀是一棟超級可愛、帶有美式鵝黃色復古感的獨立小屋。「甜點、禮品與香氛」的複合空間。
+
+</div>
+			<a href="https://naver.me/GsoBdWWB" target="_blank" class="btn-link">🗺️ .NOTE 地圖</a>
+			<a href="https://naver.me/G8s9E9lO" target="_blank" class="btn-link">🗺️ luft mansion 地圖</a>
+			<a href="https://naver.me/FoXzmAZG" target="_blank" class="btn-link">🗺️ hetras地圖</a>
+			<a href="https://naver.me/5wWetKn9" target="_blank" class="btn-link">🗺️ Keveren 地圖</a>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">16:30 - 17:30</div>
+                        <div class="activity">✨ 海雲台散步 + 看夕陽 (或延續上個行程)</div>
+			<div class="sub-desc"><li><strong>散步選：海雲台沙灘西側（往冬柏島方向）</strong> 
+<p style="margin-left: 15px;">從海雲台沙灘往西邊望去，夕陽會剛好從「廣安大橋」與「新世界高樓群（Marine City）」的鋼骨剪影之間掉進海平面。
+			                    <div class="sub-desc"><li><strong>怕冷選：海雲台 LCT 100樓「釜山 X the SKY」展望台</strong>
+<p style="margin-left: 15px;">韓國第二高樓，在 100 樓的高空觀景台，有暖氣、有大片落地窗，可以 360 度俯瞰一整條海雲台海岸線、尾浦港口與遠方的廣安大橋日落。【kkday或klook先購票】
+                    </div>
+                    </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">18:00 - 20:00</div>
+                        <div class="activity">🥩 晚餐 <span class="tag tag-food">美食</span></div>
+    <div class="sub-desc">晚餐推薦 : 味贊王鹽烤肉 海雲台店/海雲台名物牛腸/尾浦家 尾浦總店</div>
+			<a href="https://naver.me/GSDACPH7" target="_blank" class="btn-link">🗺️ 味贊王 地圖</a>
+			<a href="https://naver.me/5du4aA9f" target="_blank" class="btn-link">🗺️ 牛腸 地圖</a>
+			<a href="https://naver.me/GTn3f13H" target="_blank" class="btn-link">🗺️ 尾浦家 地圖</a>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">20:00 - 20:30</div>
+                        <div class="activity">✨ 海雲台燈節 (若無，再隨機安排)</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">20:30 -</div>
+                        <div class="activity">🏠 返回住處</div>
+                    </div>
+                </div>
+
+                <div class="custom-notes">
+                    <h4>💡 筆記</h4>
+                    <ul>
+                        <li>膠囊列車需提前預約尾浦發車時段！</li>
+                        <li>海雲台燈節亮燈時間：18:00-23:00（要再確認展期時間）。</li>
+  </ul>
+</div>
+            </div>
+        </div>
+
+<div>
+    <!-- DAY 3 -->
+       <div class="day-card" id="day3">
+        <div class="day-header" onclick="toggleDay('d3-content')">
+          <div class="day-title">
+            <span class="day-badge">Day 3</span>
+            <h2>1/18（一）慶州古都一日遊</h2>
+                </div>
+                <span>▼</span>
+            </div>
+            <div class="day-content" id="d3-content">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="time">08:30 - 10:00</div>
+                        <div class="activity">🚅 KTX 高鐵前往慶州 <span class="tag tag-transport">交通</span></div>
+ <div class="info-box">
+                    <h4>🚕 交通小幫手</h4>
+                    <ul>
+			<li><strong>方案A : 地鐵+高鐵+公車</strong> 
+                        <p style="margin-left: 0px;"><strong>第一步：</strong> 從西面站搭乘地鐵 1 號線至釜山站，再從釜山站轉搭 KTX / SRT 前往新慶州站</li>
+                        <p style="margin-left: 15px;"><strong>第二步：</strong>抵達新慶州站後，從 1 號出口右側的公車站，搭乘 700 號或 711 號公車，即可直達佛國寺站下車</li>
+ 			<p style="margin-left: 15px;">車程 1.5-2 hr，車資約 ₩13,700/人</li>
+			<li><strong>方案B : 計程車</strong> 
+                   	<p style="margin-left: 0px;">車程 1-1.5 hr，車資約 ₩30,000/人</li>
+ </ul>
+                </div>
+                <div class="custom-notes">
+                    <h4>💡 筆記</h4>
+                    <ul>
+                        <li>KTX 車票建議提前預訂（釜山站 ↔ 新慶州站）。</li>
+			<li>或直接選擇KKDAY 一日遊</li>
+			<a href="https://www.kkday.com/zh-tw/product/131062-gyeongju-1-day-tour-hwangridan-gil-daereungwon-bulguksa-donggung-wolji-south-korea="_blank" class="btn-link">🗺️ 精選行程 2000NTD/人</a>
+			<a href="https://www.kkday.com/zh-tw/product/267252" target="_blank" class="btn-link">🗺️ 世界遺產行程 2800NTD/人</a>
+                    </ul>
+                </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">10:00 - 12:00 </div>
+                        <div class="activity">🏯 佛國寺（世界文化遺產）<span class="tag tag-spot">景點</span></div>
+			<a href="https://naver.me/xzxmFxTH" target="_blank" class="btn-link">🗺️ 佛國寺 地圖</a>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">12:30 - 14:00</div>
+                        <div class="activity">🍱 午餐 & 皇理團路逛吃 <span class="tag tag-food">美食</span></div>
+ 			<div class="sub-desc">午餐推薦 : 水鏡寺/황남두꺼비/료미/桃花堂</div>
+			<a href="https://naver.me/xhPGPoLV" target="_blank" class="btn-link">🗺️ 水鏡寺 </a>
+			<a href="https://naver.me/52R5s0ff" target="_blank" class="btn-link">🗺️ 황남두꺼비 </a>
+			<a href="https://naver.me/Fw7iuSO3" target="_blank" class="btn-link">🗺️ 료미 </a>
+			<a href="https://naver.me/GipBYUZ9" target="_blank" class="btn-link">🗺️ 桃花堂 </a>
+ 			<div class="sub-desc">小吃推薦 : 慶州十塊錢麵包/黃南馬鈴薯/古墓造型冰淇淋/皇南肉餅/瞻星台造型提拉米蘇</div>
+ 			<div class="sub-desc">特色小店推薦 :
+			<li><strong>迎月書林（어서어서 / Eoseoeoseo）:</strong> 韓國最美獨立書店。只要在這裡買一本書或精美明信片，老闆就會送你一個傳統的「空白藥袋」，你可以用現場的數十款慶州限定復古印章，親手蓋上瞻星台、大陵苑古墓、韓屋等圖樣，包裝成專屬的藥袋送給自己。
+			<li><strong>大陵娛樂室（대릉원락실） :</strong> 販售許多韓國人童年回憶的古早味零食、復古玩具、搞怪鑰匙圈與貼紙。可拍一組 Y2K 風格的韓國四格拍貼。
+			<li><strong>三德工坊（삼덕상회 / Samdeok） :</strong>在地陶藝家手工捏製的陶瓷茶具、線香座、以及獨立調配的草本香氛、空間噴霧。
+			<li><strong>黃南小店（황남구멍가게) :</strong> 慶州專屬紀念品。
+
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">14:15 - 15:15</div>
+                        <div class="activity">🌌 瞻星台（東亞最古老天文台）<span class="tag tag-spot">景點</span></div>
+			<a href="https://share.google/b76JpPKBXJKVNSzE6" target="_blank" class="btn-link">🗺️ 瞻星臺 地圖 </a>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">15:30 - 17:00</div>
+                        <div class="activity">☕ 韓屋咖啡廳<span class="tag tag-food">美食</span></div>
+			<a href="https://naver.me/xeAfXduW" target="_blank" class="btn-link">🗺️ SOL CAFE 地圖 
+</a>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">17:15 - 18:15</div>
+                        <div class="activity">🌅 月精橋<span class="tag tag-spot">景點</span></div>
+			<a href="https://naver.me/FG7xnCs8" target="_blank" class="btn-link">🗺️ 月精橋 地圖 
+</a>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">18:30 - 19:00</div>
+                        <div class="activity">🌙 東宮與月池<span class="tag tag-spot">景點</span></div>
+			<a href="https://naver.me/5FmSoI8P" target="_blank" class="btn-link">🗺️ 東宮與月池 地圖 
+</a>
+                <div class="custom-notes">
+                    <h4>💡 筆記</h4>
+                    <ul>
+                        <li>東宮與月池 門票3000韓元/人。</li>
+			<li>月精橋與東宮月池夜景拍照需注意防風保暖。</li>
+                    </ul>
+                </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">19:00 - 20:30</div>
+                        <div class="activity">🍲 晚餐：韓屋釜飯 Wae Ga 或 宮廷料理 瑤石宮<span class="tag tag-food">美食</span></div>
+			<a href="https://naver.me/FK5vOXCs" target="_blank" class="btn-link">🗺️ 韓屋釜飯
+			<a href="https://naver.me/F9N4HjXw" target="_blank" class="btn-link">🗺️ 宮廷料理 
+</a>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">20:30 -</div>
+                        <div class="activity">🚅 搭車回西面住處</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- DAY 4 -->
+        <div class="day-card" id="day4">
+            <div class="day-header" onclick="toggleDay('d4-content')">
+                <div class="day-title">
+                    <span class="day-badge">Day 4</span>
+                    <h2>1/19（二）廣安里</h2>
+                </div>
+                <span>▼</span>
+            </div>
+            <div class="day-content" id="d4-content">
+                <div class="timeline">
+		    <div class="timeline-item">
+                        <div class="time">09:00 - 09:30</div>
+                        <div class="activity">前往廣安里</div>
+  <div class="info-box" style="margin-top:10px;">
+                    <h4>🚕 交通小幫手</h4>
+                    <ul>
+			<li><strong>方案A : 地鐵</strong>
+                        <p style="margin-left: 0px;"><strong>到站：</strong>從西面站（서면역）搭乘釜山地鐵2號線(往萇山（장산）方向)到廣安站。</li>
+                        <p style="margin-left: 15px;"><strong>到海灘：</strong>由廣安站 3 號或 5 號出口 出站，沿著主幹道（廣安路）步行約 10 分鐘即可抵達廣安里海水浴場。</li>
+ 			<p style="margin-left: 15px;">車程 15-20 分鐘，車資約 ₩1,550/人</li>
+			<li><strong>方案B : 計程車</strong> </li>
+ 			<p style="margin-left: 15px;">車程 20-25 分鐘，車資總計約 ₩2,750/人</li>			
+                    </ul>
+                </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="time">09:30</div>
+                        <div class="activity">🥯 早餐 </div>
+                        <div class="sub-desc">推薦 : All Sunday Bagel<span class="tag tag-food">美食</span></div>
+			<a href="https://naver.me/5WOQqri9" target="_blank" class="btn-link">🗺️ all sunday bagel
+</a>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">10:00 - 11:00</div>
+                        <div class="activity">🏖️ 廣安里海水浴場散步拍照</div>
+			<a href="https://naver.me/xzxmzK1j" target="_blank" class="btn-link">🗺️ 海水浴場 地圖
+
+</a>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">11:30</div>
+                        <div class="activity">🍜 午餐 <span class="tag tag-food">美食</span></div>
+                        <div class="sub-desc">推薦：那沙里食堂 / 釜山家 彥陽烤韓牛</div>
+			<a href="https://naver.me/GV2tQAcZ" target="_blank" class="btn-link">🗺️ 那沙里食堂
+			<a href="https://naver.me/FPn5tOXO" target="_blank" class="btn-link">🗺️ 烤韓牛
+</a>
+
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">14:00 - 17:30</div>
+                        <div class="activity">🛍️ 文創選物店挖寶 & 海景咖啡廳</div>
+                        <div class="sub-desc">咖啡推薦：Working holiday cafe / La feuille</div>
+			<a href="https://naver.me/xgNS92At" target="_blank" class="btn-link">🗺️ Working holiday
+			<a href="https://naver.me/5EUZ755T" target="_blank" class="btn-link">🗺️ La feuille
+</a>
+                        <div class="sub-desc">特色小店推薦 :
+			<li><strong>Cosymosy:</strong> 鳥娃娃鑰匙圈			
+			<li><strong>Love is giving heartbear :</strong> 黃色小熊主題雜貨
+			<li><strong>Soutem :</strong>24小時無人機台手機殼與配件
+			<li><strong>Orange bada/Little planet:</strong> 釜山海鷗專屬紀念品
+			<li><strong>Addd haus:</strong> 繽紛小物
+			<li><strong>V.Vanilla:</strong> 質感家居
+
+</a>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">17:30 - 18:00</div>
+                        <div class="activity">🌅 廣安大橋海邊夕陽</div>
+                        <div class="sub-desc">順便往晚餐方向走</div>
+
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">18:00 - 19:30</div>
+                        <div class="activity">🥩 晚餐 <span class="tag tag-food">美食</span></div>
+                        <div class="sub-desc">推薦：章腸蝦鍋 / 熟成到 廣安里店</div>
+			<a href="https://naver.me/FIcplMBK" target="_blank" class="btn-link">🗺️ 章腸蝦鍋
+			<a href="https://naver.me/GHvqhCjK" target="_blank" class="btn-link">🗺️ 熟成到
+
+</a>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">19:30 - 20:00</div>
+                        <div class="activity">🌃 廣安大橋亮燈 <span class="tag tag-spot">景點</span></div>
+                        <div class="sub-desc">飯後消化</div>
+
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">21:00 -</div>
+                        <div class="activity">🍗 宵夜：嶺南烤腸 or 酒吧 or 外送炸雞/獵奇年糕</div>
+                    </div>
+                </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- DAY 5 -->
+        <div class="day-card" id="day5">
+            <div class="day-header" onclick="toggleDay('d5-content')">
+                <div class="day-title">
+                    <span class="day-badge">Day 5</span>
+                    <h2>1/20（三）市區採購 & 來鄧</h2>
+                </div>
+                <span>▼</span>
+            </div>
+            <div class="day-content" id="d5-content">
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="time">09:00</div>
+                        <div class="activity">🥪 早餐</div>
+			<a href="https://naver.me/xyTGk7n5" target="_blank" class="btn-link">🗺️ Issac Toast
+</a>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">10:00 - 12:30</div>
+                        <div class="activity">🛍️ 大採購</div>
+                        <div class="sub-desc">釜田市場/西面樂天百貨公司/Olive Young </div>
+			<a href="https://naver.me/5pwsV02l" target="_blank" class="btn-link">🗺️ 釜田市場
+</a> 
+<div class="info-box">
+                    <h4><strong>釜田市場必吃:</h4></strong>
+                            <br>- 明卵海苔飯捲（明卵김밥）
+                            <br>- 釜田年糕排骨三秒煎（부전떡갈비）
+                            <br>- 輕鬆滿足豬腳（지성감족）
+                            <br>- 糖餅（Gyeonghwa糯米糖餅）
+                </div>
+
+</a>                
+                    <div class="timeline-item">
+                        <div class="time">12:30 - 14:00</div>
+                        <div class="activity">🍲 午餐<span class="tag tag-food">美食</span></div>
+                        <div class="sub-desc">推薦：馬鈴薯排骨湯/烤鰻魚</div>
+			<a href="https://naver.me/56RcMZ5v" target="_blank" class="btn-link">🗺️ 世界村馬鈴薯排骨湯
+			<a href="https://naver.me/Fw7iJXmE" target="_blank" class="btn-link">🗺️ 烤鰻魚
+</a>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="time">15:30 - 16:00</div>
+                        <div class="activity">🚕 抵達金海國際機場</div>
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <h4>✈️ 金海機場管制區樂天免稅店掃貨</h4>
+                    <ul>
+                        <li><strong>時間：</strong>約 16:30 過完安檢後衝右手邊樂天免稅店。</li>
+                        <li><strong>必買清單（手提上機不佔托運）：</strong>
+                            <br>- 釜山限定 Busand Sand 海鹽焦糖夾心餅乾
+                            <br>- SEJA 世子咖啡（3+1經典組）
+                            <br>- 可愛 Boogi 官方海鷗文創磁鐵
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="custom-notes">
+                    <h4>💡 筆記 / 特別備註專區</h4>
+                    <ul>
+                        <li>退稅單據記得先整理好交給海關/退稅機台。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>Bon Voyage! 祝我們有個愉快的釜山之旅 ✈️🌊</p>
+    </footer>
+
+    <script>
+        // 點擊折疊/展開每日行程
+        function toggleDay(id) {
+            const content = document.getElementById(id);
+            if (content.style.display === "none") {
+                content.style.display = "block";
+            } else {
+                content.style.display = "none";
+            }
+        }
+
+        // 以 header 與 nav 的實際總高度作為錨點偏移，避免標題被遮住。
+        function updateStickyHeaderHeight() {
+            const stickyHeader = document.querySelector('.sticky-header');
+            document.documentElement.style.setProperty(
+                '--sticky-header-height',
+                `${stickyHeader.getBoundingClientRect().height}px`
+            );
+        }
+
+        updateStickyHeaderHeight();
+        window.addEventListener('resize', updateStickyHeaderHeight);
+    </script>
+</body>
+</html>
